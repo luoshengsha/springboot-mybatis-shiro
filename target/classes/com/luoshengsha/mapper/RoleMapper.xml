@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoshengsha.mapper.RoleMapper">
+	<!-- resultMap -->
+	<resultMap type="role" id="roleResultMap">
+		<id property="id" column="id"/>
+		<collection property="permissions" column="id" select="getPermission" fetchType="lazy"/>
+	</resultMap>
+	
+    <insert id="save" parameterType="role" useGeneratedKeys="true" keyProperty="id">
+        insert into role(name) values(#{name})
+    </insert>
+    
+    <update id="update" parameterType="role">
+    	update role set name=#{name} where id=#{id}
+    </update>
+    
+    <select id="find" parameterType="int" resultMap="roleResultMap">
+    	select * from role where id=#{id}
+    </select>
+    
+    <select id="query" resultMap="roleResultMap">
+    	select * from role
+    </select>
+    
+    <insert id="savePermission">
+    	insert into role_permission(role_id,permission_id) values(#{role.id},#{permission.id})
+    </insert>
+    
+    <select id="getPermission" parameterType="int" resultType="permission">
+    	select p.* from role_permission rp right join permission p on p.id = rp.permission_id where rp.role_id=#{roleId}
+    </select>
+    
+    <delete id="deletePermission" parameterType="int">
+    	delete from role_permission where role_id=#{role.id}
+    </delete>
+    
+    <select id="getRoleByUser" parameterType="int" resultMap="roleResultMap">
+    	select r.* from user_role ur left join role r on ur.role_id=r.id where user_id=#{userId}
+    </select>
+</mapper>

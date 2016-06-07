@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoshengsha.mapper.PermissionMapper">
+    <select id="save" parameterType="permission">
+        insert into permission(permission,description,available) values(#{permission},#{description},#{available})
+    </select>
+    
+    <select id="update" parameterType="permission">
+    	update permission set name=#{name},permission=#{permission},description=#{description},available=#{available} where id=#{id}
+    </select>
+    
+    <select id="find" parameterType="int" resultType="permission">
+    	select * from permission where id=#{id}
+    </select>
+    
+    <select id="query"  resultType="permission">
+    	select * from permission
+    </select>
+</mapper>
